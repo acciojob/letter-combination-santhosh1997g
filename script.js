@@ -1,24 +1,39 @@
-// This file is not to be modified. Please ignore this.
-// We will understand all of this later in the course.
-// DO NOT MODIFY THIS FILE
+function letterCombinations(input_digit) {
+  //brute force approach
+  var numberStringHt = {
+    2:"abc",
+    3:"def",
+    4:"ghi",
+    5:"jkl",
+    6:"mno",
+    7:"pqrs",
+    8:"tuv",
+    9:"wxyz",
+  }
 
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser')
+  var allCombinations = [];
 
-const app = express();
+  for (let i = 0; i < input_digit.length; i++) {
+    let firstString = numberStringHt[input_digit[i]] || "";
+    let secondString = numberStringHt[input_digit[i+1]] || "";
+    let thirdString = numberStringHt[input_digit[i+2]] || "";
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+    if(secondString){
+      for (const firstLetter of firstString) {
+        for (let secondLetter of secondString) {
+          if(input_digit.length == 3){
+            for(let thirdLetter of thirdString){
+              allCombinations.push(firstLetter + secondLetter + thirdLetter)
+            }
+          }else{
+              allCombinations.push(firstLetter + secondLetter)
+          }
+        }
+      }
+    }
+  }
 
-const letterCombination = require('./script');
+  return allCombinations;
+}
 
-app.use(express.static(__dirname))
-
-app.post('/lettercomb',(req, res) => {
-  const input = req.body.num
-  const answer = letterCombination(input) 
-  res.send({message:JSON.stringify(answer)})
-})
-
-module.exports = app;
+module.exports = letterCombinations;
